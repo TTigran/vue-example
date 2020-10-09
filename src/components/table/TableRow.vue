@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import Modal from "@/components/table/Modal";
+
 
 export default {
   name: "TableRow",
@@ -28,7 +28,6 @@ export default {
       this.$parent.setAuthors(arr)
     },
     update:function (id){
-      Modal.methods.openModal();
       document.getElementById('id-updated-el').value = id;
     }
   }

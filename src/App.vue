@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-     <Header />
-
+    <Header/>
   </div>
 </template>
 
@@ -12,6 +11,15 @@ import Header from "@/components/header/Header";
 export default {
   name: 'App',
   components: {Header},
+  props: {
+    a: String
+  },
+  methods: {
+    print() {
+      console.log(this.$el);
+    }
+  }
+
 }
 
 </script>
@@ -23,7 +31,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-
+  background-color: white;
 }
 
 </style>

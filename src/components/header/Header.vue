@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+    <nav class="navbar navbar-toggleable-md navbar-light bg-primary">
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
@@ -21,7 +21,7 @@
 
 <script>
 export default {
-name: "Header"
+  name: "Header"
 }
 </script>
 

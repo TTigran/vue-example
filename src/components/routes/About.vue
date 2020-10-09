@@ -24,14 +24,15 @@ import { mapState } from 'vuex'
 export default {
   name: 'About',
   mounted () {
-    this.$store.dispatch('loadCoins')
+      this.$store.dispatch('loadCoins')
+
   },
-  computed: mapState([
-    'coins'
-  ]),
-  updated() {
-    // this.$store.dispatch('loadCoins')
-  }
+  computed: mapState({
+    coins(state) {
+      return state.coins
+    }
+  }),
+
 }
 
 </script>

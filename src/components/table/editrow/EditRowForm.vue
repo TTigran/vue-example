@@ -1,10 +1,10 @@
 <template>
   <div class="edit-modal">
     <form>
-      <input class="form-field" type="number" name="name" id="id-updated-el" placeholder="Id Updated" disabled><br>
-      <input class="form-field" type="number" name="name" id="id-upd" placeholder="Id"><br>
-      <input class="form-field" type="text" name="name" id="name-upd" placeholder="Name"><br>
-      <input class="form-field" type="text" name="name" id="surname-upd" placeholder="Surname"><br>
+      <input class="form-field" type="number" name="name" id="id-updated-el" ref="id-updated-el" placeholder="Id Updated" disabled><br>
+      <input class="form-field" type="number" name="name" id="id-upd" ref="id-upd" placeholder="Id"><br>
+      <input class="form-field" type="text" name="name" id="name-upd" ref="name-upd" placeholder="Name"><br>
+      <input class="form-field" type="text" name="name" id="surname-upd" ref="surname-upd" placeholder="Surname"><br>
       <button type="button" id="add-data-btn" v-on:click="upd()">SAVE</button>
     </form>
 
@@ -20,8 +20,8 @@ export default {
       let currentId = Number(document.getElementById('id-updated-el').value);
       console.log(currentId)
       let arr = [];
-      let authors = this.$parent.$parent.$parent.getAuthors;
-      console.log(authors)
+      let authors = this.$parent.getAuthors;
+
       for (let i = 0; i < authors.length; i++) {
         if (authors[i].id === currentId) {
           authors[i].id = +document.getElementById('id-upd').value;
