@@ -12,7 +12,6 @@
 <script>
 export default {
   name: "AddRow",
-
   data() {
     let count = 3;
     return {
