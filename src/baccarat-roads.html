@@ -1,1 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    #matrix1 {
+      transform: rotate(90deg);
+      margin-top: 50%;
+    }
+
+    #matrix2 {
+      top: 10px;
+      position: absolute;
+    }
+
+
+    #matrix11 {
+      transform: rotate(90deg);
+      margin-top: -119%;
+    }
+
+    #matrix21 {
+      top: 10px;
+      position: absolute;
+    }
+
+    .m {
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+
+<input id="num">
+
+<button
+  onclick="checkMatrix(+document.getElementById('num').value)">
+  Add
+</button>
+
+<div class="m">
+  <div id="matrix1">
+  </div>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <div id="matrix2">
+  </div>
+</div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<div class="m">
+  <div id="matrix11">
+  </div>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <div id="matrix21">
+  </div>
+</div>
+
+<script>
+  function reversedMatrix(matrix) {
+    let mat = [];
+
+    for (let i = 0; i < matrix.length; i++) {
+      mat[(matrix.length - 1) - i] = matrix[i].reverse()
+    }
+
+    return mat;
+  }
+
+
+  function checkZero(arr) {
+    let count = 0;
+
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] == 0) {
+        count++;
+      }
+    }
+
+    return count;
+  }
+
+  function getSymbolsWinner(winner) {
+    let value = '';
+
+    if (winner == 1) {
+      value = "<span style='color:blue'>" + "P" + "</span>";
+    }
+    if (winner == 2) {
+      value = "<span style='color:red'>" + "B" + "</span>";
+    }
+    if (winner == 3) {
+      value = "<span style='color:green'>" + "T" + "</span>";
+    }
+    if (winner == 0) {
+      value = "<span style='color:black'>" + 0 + "</span>";
+    }
+
+    return value;
+  }
+
+
+  function print(mx, id) {
+    let matrix1 = document.getElementById(id);
+    matrix1.innerHTML = "";
+
+    for (let i = 0; i < mx.length; i++) {
+      for (let j = 0; j < mx[0].length; j++) {
+        let value = getSymbolsWinner(mx[i][j]);
+        matrix1.innerHTML += value + "  ";
+      }
+      matrix1.innerHTML += "<br>";
+    }
+  }
+
+
+  ///////////////////////////////////////////////////////////////////////////////////////
+  let verticalSteps = 0;
+  let horizontalSteps = 0;
+  let count = 0;
+  let columnIndex = 0;
+  let rowIndex = 0;
+  let tieValue = "";
+  let mx = [];
+  let flag = false;
+  let previous = 1;
+  let listWinner = [];
+  let f = 0;
+
+  let bigRoad = [
+
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0]
+
+  ];
+
+
+  const lastWinner = {value: null};
+
+
+  function checkMatrix(winner) {
+
+    if (winner == 3) {
+      tieValue = 3;
+      winner = previous;
+    } else {
+      tieValue = 0;
+      previous = winner
+    }
+
+    if (count == 0) {
+      lastWinner.value = winner
+
+      if (tieValue === 3) {
+        bigRoad[columnIndex][rowIndex] = tieValue;
+      } else {
+        bigRoad[columnIndex][rowIndex] = winner;
+      }
+
+      tieValue = "";
+    } else {
+      ++verticalSteps;
+
+      if (lastWinner.value == winner) {
+        ++rowIndex
+
+        if (tieValue === 3) {
+          bigRoad[columnIndex][rowIndex] = tieValue;
+        } else {
+          bigRoad[columnIndex][rowIndex] = winner;
+        }
+
+        if (bigRoad[columnIndex][rowIndex + 1] != 0) {
+          if (bigRoad[columnIndex][rowIndex + 1] == undefined) {
+
+            if (rowIndex > 4) {
+              horizontalSteps++;
+              rowIndex = 4;
+
+              if (tieValue === 3) {
+                bigRoad[columnIndex++][5] = tieValue;
+              } else {
+                bigRoad[columnIndex++][5] = winner;
+              }
+
+              tieValue = "";
+            }
+
+          } else {
+            horizontalSteps++;
+
+            if (tieValue === 3) {
+              bigRoad[columnIndex++][rowIndex--] = tieValue;
+            } else {
+              bigRoad[columnIndex++][rowIndex--] = winner;
+            }
+
+          }
+        }
+      } else {
+        verticalSteps = 0;
+        rowIndex = 0;
+        lastWinner.value = winner;
+
+        for (let i = 0; i < bigRoad.length; i++) {
+          if (bigRoad[i][rowIndex] == 0) {
+            if (tieValue === 3) {
+              bigRoad[i][rowIndex] = tieValue;
+            } else {
+              bigRoad[i][rowIndex] = winner;
+            }
+            tieValue = "";
+            columnIndex = i;
+            break;
+          }
+        }
+      }
+    }
+
+    if (checkZero(bigRoad[columnIndex]) == 0) {
+      --rowIndex;
+      columnIndex++;
+    }
+
+    listWinner.push({
+      winner,
+      coo: [columnIndex, rowIndex]
+    })
+
+    setBigEyeRoad({
+      winner,
+      bigRoad,
+      coo: [columnIndex, rowIndex]
+    })
+
+    print(mx, "matrix1");
+    // print(bigEyeRoad, "matrix2")
+
+    count++;
+  }
+
+
+  mx = reversedMatrix(bigRoad)
+  print(mx, "matrix1");
+  // print(bigEyeRoad, "matrix2");
+
+
+  let verticalSteps1 = 0;
+  let horizontalSteps1 = 0;
+  let count1 = 0;
+  let columnIndex1 = 0;
+  let rowIndex1 = 0;
+  let tieValue1 = "";
+  let mx1 = [];
+  let flag1 = false;
+  let previous1 = 1;
+  let listWinner1 = [];
+  let input;
+  let f1 = 0;
+
+  let bigEyeRoad = [
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0]
+  ];
+
+
+  const lastWinner1 = {value: null};
+
+  function checkMatrix1(input) {
+
+    if (input == 3) {
+      tieValue1 = 3;
+      input = previous1;
+    } else {
+      tieValue1 = 0;
+      previous1 = input
+    }
+
+    if (count1 == 0) {
+      lastWinner1.value = input
+
+      if (tieValue1 === 3) {
+        bigEyeRoad[columnIndex1][rowIndex1] = tieValue1;
+      } else {
+        bigEyeRoad[columnIndex1][rowIndex1] = input;
+      }
+
+      tieValue1 = "";
+    } else {
+      ++verticalSteps1;
+
+      if (lastWinner1.value == input) {
+        ++rowIndex1
+
+        if (tieValue1 === 3) {
+          bigEyeRoad[columnIndex1][rowIndex1] = tieValue1;
+        } else {
+          bigEyeRoad[columnIndex1][rowIndex1] = input;
+        }
+
+        if (bigEyeRoad[columnIndex1][rowIndex1 + 1] != 0) {
+          if (bigEyeRoad[columnIndex1][rowIndex1 + 1] == undefined) {
+
+            if (rowIndex1 > 4) {
+              horizontalSteps1++;
+              rowIndex1 = 4;
+
+              if (tieValue1 === 3) {
+                bigEyeRoad[columnIndex1++][5] = tieValue1;
+              } else {
+                bigEyeRoad[columnIndex1++][5] = input;
+              }
+
+              tieValue1 = "";
+            }
+
+          } else {
+            horizontalSteps1++;
+
+            if (tieValue === 3) {
+              bigEyeRoad[columnIndex1++][rowIndex1--] = tieValue1;
+            } else {
+              bigEyeRoad[columnIndex1++][rowIndex1--] = input;
+            }
+
+          }
+        }
+      } else {
+        verticalSteps1 = 0;
+        rowIndex1 = 0;
+        lastWinner1.value = input;
+
+        for (let i = 0; i < bigEyeRoad.length; i++) {
+          if (bigEyeRoad[i][rowIndex1] == 0) {
+            if (tieValue1 === 3) {
+              bigEyeRoad[i][rowIndex1] = tieValue1;
+            } else {
+              bigEyeRoad[i][rowIndex1] = input;
+            }
+            tieValue1 = "";
+            columnIndex1 = i;
+            break;
+          }
+        }
+      }
+    }
+
+    if (checkZero(bigEyeRoad[columnIndex1]) == 0) {
+      --rowIndex1;
+      columnIndex1++;
+    }
+
+    listWinner1.push({
+      input,
+      coo: [columnIndex1, rowIndex1]
+    })
+
+
+    print(mx1, "matrix11");
+    count1++;
+  }
+
+  mx1 = reversedMatrix(bigEyeRoad)
+  print(mx1, "matrix11");
+
+
+  function setBigEyeRoad(cursor) {
+    let columnIndex = cursor.coo[0];
+    let rowIndex = cursor.coo[1];
+    let bigRoad = cursor.bigRoad;
+
+    if (columnIndex > 1) {
+      let lengthFirst = 6 - checkZero(bigRoad[columnIndex - 2]);
+      let lengthSecond = 6 - checkZero(bigRoad[columnIndex - 1]);
+      if (rowIndex > 0) {
+        if (bigRoad[columnIndex - 1][rowIndex] == bigRoad[columnIndex - 1][rowIndex - 1]) {
+          checkMatrix1(2);
+        } else {
+          checkMatrix1(1);
+        }
+      } else {
+        if (lengthFirst == lengthSecond) {
+          checkMatrix1(2);
+        } else {
+          checkMatrix1(1);
+        }
+      }
+    }
+  }
+
+
+</script>
+</body>
+</html>
 
