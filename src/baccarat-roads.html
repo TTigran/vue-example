@@ -4,24 +4,54 @@
   <meta charset="UTF-8">
   <title>Title</title>
   <style>
+    body {
+      background-color: black;
+    }
+
+    .container {
+      width: 45%;
+      height: 500px;
+    }
+
     #matrix1 {
+      border: solid 1px whitesmoke;
       transform: rotate(90deg);
-      margin-top: 50%;
+      margin-top: 20%;
     }
 
     #matrix2 {
-      top: 10px;
+      top: 15px;
       position: absolute;
     }
 
 
     #matrix11 {
       transform: rotate(90deg);
-      margin-top: -119%;
+      margin-top: -150%;
     }
 
     #matrix21 {
-      top: 10px;
+      top: 15px;
+      position: absolute;
+    }
+
+    #matrix12 {
+      transform: rotate(90deg);
+      margin-top: -150%;
+    }
+
+    #matrix22 {
+      top: 15px;
+      position: absolute;
+    }
+
+    #matrix13 {
+      transform: rotate(90deg);
+      margin-top: -150%;
+    }
+
+    #matrix23 {
+      top: 15px;
       position: absolute;
     }
 
@@ -33,25 +63,44 @@
 <body>
 
 <input id="num">
+<div class="container">
+  <button
+    onclick="checkMatrix(+document.getElementById('num').value)">
+    Add
+  </button>
 
-<button
-  onclick="checkMatrix(+document.getElementById('num').value)">
-  Add
-</button>
-
-<div class="m">
-  <div id="matrix1">
+  <div class="m">
+    <div id="matrix1">
+    </div>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <div id="matrix2">
+    </div>
   </div>
   <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-  <div id="matrix2">
+  <div class="m">
+    <div id="matrix11">
+    </div>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <div id="matrix21">
+    </div>
   </div>
-</div>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<div class="m">
-  <div id="matrix11">
-  </div>
+
   <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-  <div id="matrix21">
+  <div class="m">
+    <div id="matrix12">
+    </div>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <div id="matrix22">
+    </div>
+  </div>
+
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <div class="m">
+    <div id="matrix13">
+    </div>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <div id="matrix23">
+    </div>
   </div>
 </div>
 
@@ -99,19 +148,139 @@
   }
 
 
-  function print(mx, id) {
+  function getSymbolsSmallRoad(winner) {
+    let value = '';
+
+    if (winner == 1) {
+      value = "<svg  height=\"16\" width=\"16\"><circle cx=\"10\" cy=\"10\" r=\"3\" stroke=\"black\" stroke-width=\"1\" fill=\"red\"  /></svg>";
+      ;
+    }
+    if (winner == 2) {
+      value = "<svg  height=\"16\" width=\"16\"><circle cx=\"10\" cy=\"10\" r=\"3\" stroke=\"black\" stroke-width=\"1\" fill=\"blue\"  /></svg>";
+    }
+    if (winner == 0) {
+      value = "<span style='color:black'>" + 0 + "</span>";
+    }
+
+    return value;
+  }
+
+  function getSymbolsBigEyeRoad(winner) {
+    let value = '';
+
+    if (winner == 1) {
+      value = "<svg  height=\"16\" width=\"16\"><circle cx=\"10\" cy=\"10\" r=\"3\" stroke=\"red\" stroke-width=\"1\" fill=\"white\"  /></svg>";
+      ;
+    }
+    if (winner == 2) {
+      value = "<svg  height=\"16\" width=\"16\"><circle cx=\"10\" cy=\"10\" r=\"3\" stroke=\"blue\" stroke-width=\"1\" fill=\"white\"  /></svg>";
+    }
+    if (winner == 0) {
+      value = "<span style='color:black'>" + 0 + "</span>";
+    }
+
+    return value;
+  }
+
+  function getSymbolsChockRoad(winner) {
+    let value = '';
+
+    if (winner == 1) {
+      value = "<svg height=\"10\" width=\"10\">\n" +
+        "  <line x1=\"0\" y1=\"0\" x2=\"200\" y2=\"200\" style=\"stroke:rgb(255,0,0);stroke-width:2\" />\n" +
+        "  Sorry, your browser does not support inline SVG.\n" +
+        "</svg>";
+      ;
+    }
+    if (winner == 2) {
+      value = "<svg height=\"10\" width=\"10\">\n" +
+        "  <line x1=\"0\" y1=\"0\" x2=\"200\" y2=\"200\" style=\"stroke:rgb(0,64,255);stroke-width:2\" />\n" +
+        "  Sorry, your browser does not support inline SVG.\n" +
+        "</svg>";
+    }
+    if (winner == 0) {
+      value = "<span style='color:black'>" + 0 + "</span>";
+    }
+
+    return value;
+  }
+
+
+  function printRoadsByType(mx, id, func) {
     let matrix1 = document.getElementById(id);
     matrix1.innerHTML = "";
 
     for (let i = 0; i < mx.length; i++) {
       for (let j = 0; j < mx[0].length; j++) {
-        let value = getSymbolsWinner(mx[i][j]);
+        let value = func(mx[i][j]);
         matrix1.innerHTML += value + "  ";
       }
       matrix1.innerHTML += "<br>";
     }
   }
 
+  function setRoads(object) {
+
+    setBigEyeRoad(object)
+
+    setSmallRoad(object)
+
+    setChockRoad(object)
+
+  }
+
+
+  // function print(mx, id) {
+  //   let matrix1 = document.getElementById(id);
+  //   matrix1.innerHTML = "";
+  //
+  //   for (let i = 0; i < mx.length; i++) {
+  //     for (let j = 0; j < mx[0].length; j++) {
+  //       let value = getSymbolsWinner(mx[i][j]);
+  //       matrix1.innerHTML += value + "  ";
+  //     }
+  //     matrix1.innerHTML += "<br>";
+  //   }
+  // }
+
+  // function printBigEye(mx, id) {
+  //   let matrix1 = document.getElementById(id);
+  //   matrix1.innerHTML = "";
+  //
+  //   for (let i = 0; i < mx.length; i++) {
+  //     for (let j = 0; j < mx[0].length; j++) {
+  //       let value = getSymbolsBigEyeRoad(mx[i][j]);
+  //       matrix1.innerHTML += value + "  ";
+  //     }
+  //     matrix1.innerHTML += "<br>";
+  //   }
+  // }
+  //
+  // function printSmall(mx, id) {
+  //   let matrix1 = document.getElementById(id);
+  //   matrix1.innerHTML = "";
+  //
+  //   for (let i = 0; i < mx.length; i++) {
+  //     for (let j = 0; j < mx[0].length; j++) {
+  //       let value = getSymbolsSmallRoad(mx[i][j]);
+  //       matrix1.innerHTML += value + "  ";
+  //     }
+  //     matrix1.innerHTML += "<br>";
+  //   }
+  // }
+  //
+  // function printChock(mx, id) {
+  //   let matrix1 = document.getElementById(id);
+  //   matrix1.innerHTML = "";
+  //
+  //   for (let i = 0; i < mx.length; i++) {
+  //     for (let j = 0; j < mx[0].length; j++) {
+  //       let value = getSymbolsChockRoad(mx[i][j]);
+  //       matrix1.innerHTML += value + "  ";
+  //     }
+  //     matrix1.innerHTML += "<br>";
+  //   }
+  // }
 
   ///////////////////////////////////////////////////////////////////////////////////////
   let verticalSteps = 0;
@@ -248,22 +417,20 @@
       coo: [columnIndex, rowIndex]
     })
 
-    setBigEyeRoad({
+    setRoads({
       winner,
       bigRoad,
       coo: [columnIndex, rowIndex]
     })
 
-    print(mx, "matrix1");
-    // print(bigEyeRoad, "matrix2")
-
+    printRoadsByType(mx, "matrix1", getSymbolsWinner);
     count++;
   }
 
 
   mx = reversedMatrix(bigRoad)
-  print(mx, "matrix1");
-  // print(bigEyeRoad, "matrix2");
+  printRoadsByType(mx, "matrix1", getSymbolsWinner);
+
 
 
   let verticalSteps1 = 0;
@@ -360,7 +527,7 @@
           } else {
             horizontalSteps1++;
 
-            if (tieValue === 3) {
+            if (tieValue1 === 3) {
               bigEyeRoad[columnIndex1++][rowIndex1--] = tieValue1;
             } else {
               bigEyeRoad[columnIndex1++][rowIndex1--] = input;
@@ -399,12 +566,298 @@
     })
 
 
-    print(mx1, "matrix11");
+    printRoadsByType(mx1, "matrix11", getSymbolsBigEyeRoad);
     count1++;
   }
 
   mx1 = reversedMatrix(bigEyeRoad)
-  print(mx1, "matrix11");
+  printRoadsByType(mx1, "matrix11", getSymbolsBigEyeRoad);
+  /////////////////////////////////////////////////////////////
+
+
+  let verticalSteps2 = 0;
+  let horizontalSteps2 = 0;
+  let count2 = 0;
+  let columnIndex2 = 0;
+  let rowIndex2 = 0;
+  let tieValue2 = "";
+  let mx2 = [];
+  let flag2 = false;
+  let previous2 = 1;
+  let listWinner2 = [];
+  let input2;
+  let f2 = 0;
+
+  let smallRoad = [
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0]
+  ];
+
+
+  const lastWinner2 = {value: null};
+
+  function checkMatrix2(input) {
+
+    if (input == 3) {
+      tieValue2 = 3;
+      input = previous2;
+    } else {
+      tieValue2 = 0;
+      previous2 = input
+    }
+
+    if (count2 == 0) {
+      lastWinner2.value = input
+
+      if (tieValue2 === 3) {
+        smallRoad[columnIndex2][rowIndex2] = tieValue2;
+      } else {
+        smallRoad[columnIndex2][rowIndex2] = input;
+      }
+
+      tieValue2 = "";
+    } else {
+      ++verticalSteps2;
+
+      if (lastWinner2.value == input) {
+        ++rowIndex2
+
+        if (tieValue2 === 3) {
+          smallRoad[columnIndex2][rowIndex2] = tieValue2;
+        } else {
+          smallRoad[columnIndex2][rowIndex2] = input;
+        }
+
+        if (smallRoad[columnIndex2][rowIndex2 + 1] != 0) {
+          if (smallRoad[columnIndex2][rowIndex2 + 1] == undefined) {
+
+            if (rowIndex2 > 4) {
+              horizontalSteps2++;
+              rowIndex2 = 4;
+              if (tieValue2 === 3) {
+                smallRoad[columnIndex2++][5] = tieValue2;
+              } else {
+                smallRoad[columnIndex2++][5] = input;
+              }
+
+              tieValue2 = "";
+            }
+
+          } else {
+            horizontalSteps2++;
+
+            if (tieValue2 === 3) {
+              smallRoad[columnIndex2++][rowIndex2--] = tieValue2;
+            } else {
+              smallRoad[columnIndex2++][rowIndex2--] = input;
+            }
+
+          }
+        }
+      } else {
+        verticalSteps2 = 0;
+        rowIndex2 = 0;
+        lastWinner2.value = input;
+
+        for (let i = 0; i < smallRoad.length; i++) {
+          if (smallRoad[i][rowIndex2] == 0) {
+            if (tieValue2 === 3) {
+              smallRoad[i][rowIndex2] = tieValue2;
+            } else {
+              smallRoad[i][rowIndex2] = input;
+            }
+            tieValue2 = "";
+            columnIndex2 = i;
+            break;
+          }
+        }
+      }
+    }
+
+    if (checkZero(smallRoad[columnIndex2]) == 0) {
+      --rowIndex2;
+      columnIndex2++;
+    }
+
+    listWinner2.push({
+      input,
+      coo: [columnIndex2, rowIndex2]
+    })
+
+
+    printRoadsByType(mx2, "matrix12", getSymbolsSmallRoad);
+    count2++;
+  }
+
+  mx2 = reversedMatrix(smallRoad)
+  printRoadsByType(mx2, "matrix12", getSymbolsSmallRoad);
+
+
+  /*---------------------------------------------------------------------------------------------------*/
+
+  let verticalSteps3 = 0;
+  let horizontalSteps3 = 0;
+  let count3 = 0;
+  let columnIndex3 = 0;
+  let rowIndex3 = 0;
+  let tieValue3 = "";
+  let mx3 = [];
+  let flag3 = false;
+  let previous3 = 1;
+  let listWinner3 = [];
+  let input3;
+  let f3 = 0;
+
+  let chockRoad = [
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0]
+  ];
+
+
+  const lastWinner3 = {value: null};
+
+  function checkMatrix3(input) {
+
+    if (input == 3) {
+      tieValue3 = 3;
+      input = previous3;
+    } else {
+      tieValue3 = 0;
+      previous3 = input
+    }
+
+    if (count3 == 0) {
+      lastWinner3.value = input
+
+      if (tieValue3 === 3) {
+        chockRoad[columnIndex3][rowIndex3] = tieValue3;
+      } else {
+        chockRoad[columnIndex3][rowIndex3] = input;
+      }
+
+      tieValue3 = "";
+    } else {
+      ++verticalSteps3;
+
+      if (lastWinner3.value == input) {
+        ++rowIndex3
+
+        if (tieValue3 === 3) {
+          chockRoad[columnIndex3][rowIndex3] = tieValue3;
+        } else {
+          chockRoad[columnIndex3][rowIndex3] = input;
+        }
+
+        if (chockRoad[columnIndex3][rowIndex3 + 1] != 0) {
+          if (chockRoad[columnIndex3][rowIndex3 + 1] == undefined) {
+
+            if (rowIndex3 > 4) {
+              horizontalSteps3++;
+              rowIndex3 = 4;
+              if (tieValue3 === 3) {
+                chockRoad[columnIndex3++][5] = tieValue3;
+              } else {
+                chockRoad[columnIndex3++][5] = input;
+              }
+
+              tieValue3 = "";
+            }
+
+          } else {
+            horizontalSteps3++;
+
+            if (tieValue3 === 3) {
+              chockRoad[columnIndex3++][rowIndex3--] = tieValue3;
+            } else {
+              chockRoad[columnIndex3++][rowIndex3--] = input;
+            }
+
+          }
+        }
+      } else {
+        verticalSteps3 = 0;
+        rowIndex3 = 0;
+        lastWinner3.value = input;
+
+        for (let i = 0; i < chockRoad.length; i++) {
+          if (chockRoad[i][rowIndex3] == 0) {
+            if (tieValue3 === 3) {
+              chockRoad[i][rowIndex3] = tieValue3;
+            } else {
+              chockRoad[i][rowIndex3] = input;
+            }
+            tieValue3 = "";
+            columnIndex3 = i;
+            break;
+          }
+        }
+      }
+    }
+
+    if (checkZero(chockRoad[columnIndex3]) == 0) {
+      --rowIndex3;
+      columnIndex3++;
+    }
+
+    listWinner3.push({
+      input,
+      coo: [columnIndex3, rowIndex3]
+    })
+
+
+    printRoadsByType(mx3, "matrix13", getSymbolsChockRoad);
+    count3++;
+  }
+
+  mx3 = reversedMatrix(chockRoad)
+  printRoadsByType(mx3, "matrix13", getSymbolsChockRoad);
+
+
+  /*---------------------------------------------------------------------------------------------------*/
 
 
   function setBigEyeRoad(cursor) {
@@ -413,26 +866,144 @@
     let bigRoad = cursor.bigRoad;
 
     if (columnIndex > 1) {
+
       let lengthFirst = 6 - checkZero(bigRoad[columnIndex - 2]);
       let lengthSecond = 6 - checkZero(bigRoad[columnIndex - 1]);
+      let bool1  = bigRoad[columnIndex - 1][rowIndex] == bigRoad[columnIndex - 1][rowIndex - 1];
+      let bool2  = lengthFirst == lengthSecond
+
+
       if (rowIndex > 0) {
-        if (bigRoad[columnIndex - 1][rowIndex] == bigRoad[columnIndex - 1][rowIndex - 1]) {
-          checkMatrix1(2);
-        } else {
+        if (bool1) {
           checkMatrix1(1);
+        } else {
+          checkMatrix1(2);
         }
       } else {
-        if (lengthFirst == lengthSecond) {
-          checkMatrix1(2);
-        } else {
+        if (bool2) {
           checkMatrix1(1);
+        } else {
+          checkMatrix1(2);
         }
       }
     }
   }
 
+  function setSmallRoad(cursor) {
+    let columnIndex = cursor.coo[0];
+    let rowIndex = cursor.coo[1];
+    let bigRoad = cursor.bigRoad;
+
+
+    if (columnIndex == 2) {
+
+      let lengthFirst = 6 - checkZero(bigRoad[columnIndex - 2]);
+      let lengthSecond = 6 - checkZero(bigRoad[columnIndex - 1]);
+      let bool1  = bigRoad[columnIndex - 1][rowIndex] == bigRoad[columnIndex - 1][rowIndex - 1];
+      let bool2  = lengthFirst == lengthSecond
+
+
+
+      if (rowIndex > 0) {
+
+        if (rowIndex > 0) {
+          if (bool1) {
+            checkMatrix2(1);
+          } else {
+            checkMatrix2(2);
+          }
+        } else {
+          if (bool2) {
+            checkMatrix2(1);
+          } else {
+            checkMatrix2(2);
+          }
+        }
+
+      }
+    }
+
+    if (columnIndex > 2) {
+      let lengthFirst = 6 - checkZero(bigRoad[columnIndex - 3]);
+      let lengthSecond = 6 - checkZero(bigRoad[columnIndex - 1]);
+      let bool1 = bigRoad[columnIndex - 2][rowIndex] == bigRoad[columnIndex - 2][rowIndex - 1]
+      let bool2 = lengthFirst == lengthSecond
+
+      if (rowIndex > 0) {
+        if (bool1) {
+          checkMatrix2(1);
+        } else {
+          checkMatrix2(2);
+        }
+      } else {
+        if (bool2) {
+          checkMatrix2(1);
+        } else {
+          checkMatrix2(2);
+        }
+      }
+    }
+    count2++
+  }
+
+  function setChockRoad(cursor) {
+    let columnIndex = cursor.coo[0];
+    let rowIndex = cursor.coo[1];
+    let bigRoad = cursor.bigRoad;
+
+
+    if (columnIndex == 4) {
+
+      let lengthFirst = 6 - checkZero(bigRoad[columnIndex - 2]);
+      let lengthSecond = 6 - checkZero(bigRoad[columnIndex - 1]);
+      let bool1  = bigRoad[columnIndex - 1][rowIndex] == bigRoad[columnIndex - 1][rowIndex - 1];
+      let bool2  = lengthFirst == lengthSecond
+
+
+      if (rowIndex > 0) {
+        if (rowIndex > 0) {
+          if (bool1) {
+            checkMatrix3(1);
+          } else {
+            checkMatrix3(2);
+          }
+        } else {
+          if (bool2) {
+            checkMatrix3(1);
+          } else {
+            checkMatrix3(2);
+          }
+        }
+
+      }
+    }
+
+    if (columnIndex > 4) {
+
+      let lengthFirst = 6 - checkZero(bigRoad[columnIndex - 4]);
+      let lengthSecond = 6 - checkZero(bigRoad[columnIndex - 1]);
+      let bool1  = bigRoad[columnIndex - 3][rowIndex] == bigRoad[columnIndex - 3][rowIndex - 1];
+      let bool2  = lengthFirst == lengthSecond
+
+
+      if (rowIndex > 0) {
+        if (bool1) {
+          checkMatrix3(1);
+        } else {
+          checkMatrix3(2);
+        }
+      } else {
+        if (bool2) {
+          checkMatrix3(1);
+        } else {
+          checkMatrix3(2);
+        }
+      }
+    }
+  }
 
 </script>
 </body>
 </html>
+
 
